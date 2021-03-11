@@ -12,9 +12,9 @@ Format: raco \<path> \<destination>
 
 Examples:
 <ul>
-  <li>raco movie.mp4 movie2.avi</li>
-	<li>raco image.png image.pdf</li>
-	<li>raco image.jpg image.png</li>
+  <li>./raco movie.mp4 movie2.avi</li>
+  <li>./raco image.png image.pdf</li>
+  <li>./raco image.jpg image.png</li>
 </ul>
 
 Supported extensions:

@@ -8,7 +8,7 @@ That's why I made a simple program that will handle all the hard work for you.
 
 The only thing you need to remember is one command name (raco) and 2 arguments (file path and destination path). For everything else program will takes care of.
 
-Format: raco \<path> \<destination>
+Format: ./raco \<path> \<destination>
 
 Examples:
 <ul>

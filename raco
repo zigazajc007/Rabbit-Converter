@@ -68,7 +68,7 @@ if [[ ! $# -eq 2 ]]; then
 	echo -e "\n${YELLOW}You need to provide 2 arguments!\n"
 	echo -e "First is path to file you want to convert."
 	echo -e "Second is location with file name and extension for converted file.\n"
-	echo -e "${GREEN}Format: raco <src> <dest>\n"
+	echo -e "${GREEN}Format: raco <path> <dest>\n"
 	echo -e "${BLUE}Examples:"
 	echo -e "\traco movie.avi movie2.mp4"
 	echo -e "\traco /downloads/movie.avi /downloads/movie2.mp4"

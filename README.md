@@ -16,3 +16,18 @@ Examples:
 	<li>raco image.png image.pdf</li>
 	<li>raco image.jpg image.png</li>
 </ul>
+
+Supported extensions:
+<ul>
+  <li>mp4</li>
+  <li>mkv</li>
+  <li>avi</li>
+  <li>flv</li>
+  <li>mov</li>
+  <li>webm</li>
+  <li>mp3</li>
+  <li>png</li>
+  <li>jpg</li>
+  <li>pdf</li>
+  <li>gif</li>
+</ul>

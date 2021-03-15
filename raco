@@ -207,6 +207,26 @@ elif [ "${srcExt}" == "flv" ]; then
 	else
 		echo -e "${YELLOW}Convertion from ${srcExt} to ${destExt} is not supported yet."
 	fi
+elif [ "${srcExt}" == "mov" ]; then
+	if [ "${destExt}" == "mp4" ] || [ "${destExt}" == "mkv" ] || [ "${destExt}" == "avi" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" -vcodec h264 -acodec mp2 "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	elif [ "${destExt}" == "flv" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" -c:v libx264 -ar 22050 -crf 28 "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	elif [ "${destExt}" == "webm" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" -c:v libvpx -crf 10 -b:v 1M -c:a libvorbis "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	elif [ "${destExt}" == "mp3" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" -vn "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	else
+		echo -e "${YELLOW}Convertion from ${srcExt} to ${destExt} is not supported yet."
+	fi
 elif [ "${srcExt}" == "png" ]; then
 	if [ "${destExt}" == "jpg" ] || [ "${destExt}" == "gif" ] || [ "${destExt}" == "pdf" ]; then
 		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."

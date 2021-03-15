@@ -68,11 +68,11 @@ if [[ ! $# -eq 2 ]]; then
 	echo -e "\n${YELLOW}You need to provide 2 arguments!\n"
 	echo -e "First is path to file you want to convert."
 	echo -e "Second is location with file name and extension for converted file.\n"
-	echo -e "${GREEN}Format: raco <path> <dest>\n"
+	echo -e "${GREEN}Format: ./raco <path> <dest>\n"
 	echo -e "${BLUE}Examples:"
-	echo -e "\traco movie.avi movie2.mp4"
-	echo -e "\traco /downloads/movie.avi /downloads/movie2.mp4"
-	echo -e "\traco '/downloads/Movie 1.avi' '/downloads/Movie 2.mp4'\n"
+	echo -e "\t./raco movie.mp4 movie2.avi"
+	echo -e "\t./raco image.png image.pdf"
+	echo -e "\t./raco image.jpg image.png\n"
 	exit 1
 fi
 
@@ -108,18 +108,21 @@ if [[ ! " ${supportExt[@]} " =~ " ${destExt} " ]]; then
     exit 1
 fi
 
+if [ "${srcExt}" == "${destExt}" ]; then
+	echo -e "${GREEN}Copying from ${srcPath} to ${destPath} has started..."
+	cp "${srcPath}" "${destPath}"
+	echo -e "${GREEN}Copying completed."
+	exit 1
+fi
+
 if [ "${srcExt}" == "mp4" ]; then
-	if [ "${destExt}" == "mp4" ]; then
-		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
-        cp "${srcPath}" "${destPath}"
-        echo -e "${GREEN}Convertion completed."
-	elif [ "${destExt}" == "mkv" ] || [ "${destExt}" == "avi" ]; then
+	if [ "${destExt}" == "mkv" ] || [ "${destExt}" == "avi" ]; then
 		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
 		ffmpeg -i "${srcPath}" -vcodec copy -acodec copy "${destPath}" &> /dev/null
 		echo -e "${GREEN}Convertion completed."
 	elif [ "${destExt}" == "flv" ]; then
 		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
-		ffmpeg -i "${srcPath}" -c copy -copyts "${destPath}" &> /dev/null
+		ffmpeg -i "${srcPath}" -c:v libx264 -ar 22050 -crf 28 "${destPath}" &> /dev/null
 		echo -e "${GREEN}Convertion completed."
 	elif [ "${destExt}" == "mov" ]; then
 		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
@@ -136,12 +139,52 @@ if [ "${srcExt}" == "mp4" ]; then
 	else
 		echo -e "${YELLOW}Convertion from ${srcExt} to ${destExt} is not supported yet."
 	fi
-elif [ "${srcExt}" == "png" ]; then
-	if [ "${destExt}" == "png" ]; then
+elif [ "${srcExt}" == "mkv" ]; then
+	if [ "${destExt}" == "mp4" ] || [ "${destExt}" == "avi" ]; then
 		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
-        cp "${srcPath}" "${destPath}"
+		ffmpeg -i "${srcPath}" -c copy -copyts "${destPath}" &> /dev/null
 		echo -e "${GREEN}Convertion completed."
-	elif [ "${destExt}" == "jpg" ] || [ "${destExt}" == "gif" ] || [ "${destExt}" == "pdf" ]; then
+	elif [ "${destExt}" == "flv" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" -c:v libx264 -ar 22050 -crf 28 "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	elif [ "${destExt}" == "mov" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	elif [ "${destExt}" == "webm" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" -c:v libvpx-vp9 -crf 30 -b:v 0 -b:a 128k -c:a libopus "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	elif [ "${destExt}" == "mp3" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" -vn "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	fi
+elif [ "${srcExt}" == "avi" ]; then
+	if [ "${destExt}" == "mp4" ] || [ "${destExt}" == "mkv" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" -vcodec copy -acodec copy "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	elif [ "${destExt}" == "flv" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" -c:v libx264 -ar 22050 -crf 28 "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	elif [ "${destExt}" == "mov" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	elif [ "${destExt}" == "webm" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" -c:v libvpx-vp9 -crf 30 -b:v 0 -b:a 128k -c:a libopus "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	elif [ "${destExt}" == "mp3" ]; then
+		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
+		ffmpeg -i "${srcPath}" -vn "${destPath}" &> /dev/null
+		echo -e "${GREEN}Convertion completed."
+	fi
+elif [ "${srcExt}" == "png" ]; then
+	if [ "${destExt}" == "jpg" ] || [ "${destExt}" == "gif" ] || [ "${destExt}" == "pdf" ]; then
 		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
 		convert "${srcPath}" "${destPath}" &> /dev/null
 		echo -e "${GREEN}Convertion completed."
@@ -149,11 +192,7 @@ elif [ "${srcExt}" == "png" ]; then
 		echo -e "${YELLOW}Convertion from ${srcExt} to ${destExt} is not supported yet."
 	fi
 elif [ "${srcExt}" == "jpg" ]; then
-	if [ "${destExt}" == "jpg" ]; then
-		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
-		cp "${srcPath}" "${destPath}"
-		echo -e "${GREEN}Convertion completed."
-	elif [ "${destExt}" == "png" ] || [ "${destExt}" == "gif" ] || [ "${destExt}" == "pdf" ]; then
+	if [ "${destExt}" == "png" ] || [ "${destExt}" == "gif" ] || [ "${destExt}" == "pdf" ]; then
 		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
 		convert "${srcPath}" "${destPath}" &> /dev/null
 		echo -e "${GREEN}Convertion completed."
@@ -161,11 +200,7 @@ elif [ "${srcExt}" == "jpg" ]; then
 		echo -e "${YELLOW}Convertion from ${srcExt} to ${destExt} is not supported yet."
 	fi
 elif [ "${srcExt}" == "pdf" ]; then
-	if [ "${destExt}" == "pdf" ]; then
-		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
-		cp "${srcPath}" "${destPath}"
-		echo -e "${GREEN}Convertion completed."
-	elif [ "${destExt}" == "png" ] || [ "${destExt}" == "jpg" ] || [ "${destExt}" == "gif" ]; then
+	if [ "${destExt}" == "png" ] || [ "${destExt}" == "jpg" ] || [ "${destExt}" == "gif" ]; then
 		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
 		convert "${srcPath}" "${destPath}" &> /dev/null
 		echo -e "${GREEN}Convertion completed."

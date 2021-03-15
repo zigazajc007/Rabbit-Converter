@@ -142,7 +142,7 @@ if [ "${srcExt}" == "mp4" ]; then
 elif [ "${srcExt}" == "mkv" ]; then
 	if [ "${destExt}" == "mp4" ] || [ "${destExt}" == "avi" ]; then
 		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
-		ffmpeg -i "${srcPath}" -c copy -copyts "${destPath}" &> /dev/null
+		ffmpeg -i "${srcPath}" -vcodec copy -acodec copy "${destPath}" &> /dev/null
 		echo -e "${GREEN}Convertion completed."
 	elif [ "${destExt}" == "flv" ]; then
 		echo -e "${GREEN}Convertion from ${srcExt} to ${destExt} has started..."
